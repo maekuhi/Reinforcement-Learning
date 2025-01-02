@@ -1,1 +1,3 @@
-**Chapter2**
+# Chapter2
+
+## Optimistic Initial Values

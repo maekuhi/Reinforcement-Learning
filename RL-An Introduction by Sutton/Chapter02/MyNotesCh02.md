@@ -29,7 +29,12 @@ $Q_t(a) \doteq \frac{\text{sum of rewards when (a) taken prior to (t)}}{\text{nu
   - the probability of selecting the optimal action converges to greater than $1-\epsilon$
 
 ## The 10-armed Testbed
+- A set of 2000 randomly generated 10-armed bandits with a normal distribution with mean zero and unit variance.
 ![image](https://github.com/user-attachments/assets/c9edf1b7-a0b8-450c-9ad2-501ed1e631a8)
+- We can measure any learning method's performance and behaviour as it improves with experience over 1000 time steps when applied to one of the bandit problems. This makes up one run. Repeating this for 2000 independent runs, each with a different bandit problem, we obtained measures of the learning algorithm’s average behaviour.
+- Using sample-average technique
+![image](https://github.com/user-attachments/assets/2de03446-d659-4ccb-a0f9-8d98a4a1ac07)
+
 
 
 ## Optimistic Initial Values

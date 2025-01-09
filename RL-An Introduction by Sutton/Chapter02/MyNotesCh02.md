@@ -28,6 +28,8 @@ $Q_t(a) \doteq \frac{\text{sum of rewards when (a) taken prior to (t)}}{\text{nu
   - ensuring all the $Q_t(a)$ converge to $q_*(a)$
   - the probability of selecting the optimal action converges to greater than $1-\epsilon$
 
+## The 10-armed Testbed
+![image](https://github.com/user-attachments/assets/c9edf1b7-a0b8-450c-9ad2-501ed1e631a8)
 
 
 ## Optimistic Initial Values

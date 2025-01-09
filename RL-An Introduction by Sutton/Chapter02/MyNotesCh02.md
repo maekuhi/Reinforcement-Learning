@@ -34,7 +34,89 @@ $Q_t(a) \doteq \frac{\text{sum of rewards when (a) taken prior to (t)}}{\text{nu
 - We can measure any learning method's performance and behaviour as it improves with experience over 1000 time steps when applied to one of the bandit problems. This makes up one run. Repeating this for 2000 independent runs, each with a different bandit problem, we obtained measures of the learning algorithm’s average behaviour.
 - Using sample-average technique
 ![image](https://github.com/user-attachments/assets/2de03446-d659-4ccb-a0f9-8d98a4a1ac07)
+```python
+Created on Thu Jan  9 18:43:53 2025
 
+@author: Mahdi Amani
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+num_actions = 10  # Number of bandit arms
+num_steps = 1000  # Number of steps
+num_runs = 2000  # Number of runs
+epsilons = [0, 0.01, 0.1]  # Values of epsilon
+
+# Function to simulate the bandit problem
+def simulate_bandit(epsilon, num_steps, num_runs, num_actions):
+    rewards = np.zeros((num_runs, num_steps))
+    optimal_action_counts = np.zeros((num_runs, num_steps))
+    
+    for run in range(num_runs):
+        # True action values for this run
+        true_values = np.random.normal(0, 1, num_actions)
+        optimal_action = np.argmax(true_values)
+        
+        # Estimated action values and action counts
+        Q = np.zeros(num_actions)
+        action_counts = np.zeros(num_actions)
+        
+        for step in range(num_steps):
+            # Epsilon-greedy action selection
+            if np.random.rand() < epsilon:
+                action = np.random.randint(num_actions)  # Random action
+            else:
+                action = np.argmax(Q)  # Greedy action
+            
+            # Reward from the selected action
+            reward = np.random.normal(true_values[action], 1)
+            rewards[run, step] = reward
+            
+            # Update optimal action count
+            if action == optimal_action:
+                optimal_action_counts[run, step] = 1
+            
+            # Update action value estimate
+            action_counts[action] += 1
+            Q[action] += (reward - Q[action]) / action_counts[action]
+    
+    # Average rewards and optimal action percentages
+    avg_rewards = np.mean(rewards, axis=0)
+    optimal_action_percent = np.mean(optimal_action_counts, axis=0) * 100
+    
+    return avg_rewards, optimal_action_percent
+
+# Simulate for each epsilon value
+results = {}
+for epsilon in epsilons:
+    avg_rewards, optimal_action_percent = simulate_bandit(epsilon, num_steps, num_runs, num_actions)
+    results[epsilon] = (avg_rewards, optimal_action_percent)
+
+# Plotting
+fig, axs = plt.subplots(2, 1, figsize=(10, 10))
+
+# Average reward plot
+for epsilon in epsilons:
+    axs[0].plot(results[epsilon][0], label=f"$\\epsilon$={epsilon}")
+axs[0].set_title("Average reward")
+axs[0].set_xlabel("Steps")
+axs[0].set_ylabel("Reward")
+axs[0].legend()
+
+# % Optimal action plot
+for epsilon in epsilons:
+    axs[1].plot(results[epsilon][1], label=f"$\\epsilon$={epsilon}")
+axs[1].set_title("% Optimal action")
+axs[1].set_xlabel("Steps")
+axs[1].set_ylabel("% Optimal action")
+axs[1].legend()
+
+plt.tight_layout()
+plt.show()
+
+```
 
 
 ## Optimistic Initial Values
